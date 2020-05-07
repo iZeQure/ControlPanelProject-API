@@ -152,5 +152,10 @@ namespace ControlPanel_API.Data.Database
             // Return the current state of the connection.
             return GetMySqlConnection.State;
         }
+
+        public bool PingServer()
+        {
+            return GetMySqlConnection.Ping();
+        }
     }
 }

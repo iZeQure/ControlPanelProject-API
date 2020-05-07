@@ -23,5 +23,11 @@ namespace ControlPanel_API.Interfaces
         /// </summary>
         /// <returns></returns>
         ConnectionState GetConnectionState();
+
+        /// <summary>
+        /// Check if the server is alive.
+        /// </summary>
+        /// <returns></returns>
+        bool PingServer();
     }
 }
