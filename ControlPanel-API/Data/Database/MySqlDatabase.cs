@@ -4,6 +4,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -107,6 +108,7 @@ namespace ControlPanel_API.Data.Database
 
                 // If validated, open connection.
                 GetMySqlConnection.Open();
+                Debug.WriteLine($"########## Should open connection: [{GetMySqlConnection.State}] <{GetMySqlConnection.Ping()}> ##########");
             }
             catch (InvalidOperationException)
             {
@@ -143,6 +145,12 @@ namespace ControlPanel_API.Data.Database
             {
                 throw;
             }
+        }
+
+        public ConnectionState GetConnectionState()
+        {
+            // Return the current state of the connection.
+            return GetMySqlConnection.State;
         }
     }
 }

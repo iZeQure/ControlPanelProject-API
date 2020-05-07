@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,5 +17,11 @@ namespace ControlPanel_API.Interfaces
         /// Close current connection to database.
         /// </summary>
         void CloseConnection();
+
+        /// <summary>
+        /// Get the current state of the connection.
+        /// </summary>
+        /// <returns></returns>
+        ConnectionState GetConnectionState();
     }
 }

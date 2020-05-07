@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using ControlPanel_API.Data.Database;
@@ -14,24 +15,32 @@ namespace ControlPanel_API.Controllers
     [ApiController]
     public class DebugController : ControllerBase
     {
+        // GET: verify
+        [HttpGet("v")]
+        public IEnumerable<string> Verify()
+        {
+            //MySqlDatabase.Instance.OpenConnection();
+            IDatabase db = MySqlDatabase.Instance;
+
+            try
+            {
+                db.OpenConnection();
+
+                ConnectionState getState = db.GetConnectionState();
+
+                return new string[] { $"Connection :", $"{getState}" };
+            }
+            finally
+            {
+                db.CloseConnection();
+            }
+        }
+
         // GET: api/Debug
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            MySqlDatabase.Instance.OpenConnection();
-
-            try
-            {
-                return new string[] { $"Connection :", $"{MySqlDatabase.Instance.GetMySqlConnection.State}" };
-            }
-            catch (MySqlException)
-            {
-                return new string[] { $"Error: ", $"Could not open connection." };
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return new string[] { "Cookies", "Sandwiches", "Melons", "Cabbages" };
         }
 
         // GET: api/Debug/5
