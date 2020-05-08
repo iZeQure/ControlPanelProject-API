@@ -1,7 +1,12 @@
-﻿using ControlPanel_API.Entities;
+﻿using ControlPanel_API.Data.Database;
+using ControlPanel_API.Entities;
+using ControlPanel_API.Interfaces;
 using ControlPanel_API.Interfaces.Repositories;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,7 +19,38 @@ namespace ControlPanel_API.Data
     {
         public void Create(User create)
         {
-            throw new NotImplementedException();
+            MySqlDatabase mySqlDB = MySqlDatabase.Instance;
+            User newUser = new User();
+
+            using (mySqlDB.GetMySqlConnection)
+            {
+                using MySqlCommand command = new MySqlCommand()
+                {
+                    Connection = mySqlDB.GetMySqlConnection,
+                    CommandText = "CreateNewUser",
+                    CommandType = CommandType.StoredProcedure,
+                    CommandTimeout = 30
+                };
+
+                command.Parameters.AddWithValue("firstName", newUser.FirstName);
+                command.Parameters.AddWithValue("lastName", newUser.LastName);
+                command.Parameters.AddWithValue("phoneNumber", newUser.PhoneNumber);
+                command.Parameters.AddWithValue("emailAddress", newUser.EmailAddress);
+                command.Parameters.AddWithValue("password", newUser.Password);
+                command.Parameters.AddWithValue("onlineStatus", newUser.OnlineStatus);
+                command.Parameters.AddWithValue("isDisabled", newUser.IsDisabled);
+
+                try
+                {
+                    mySqlDB.OpenConnection();
+                    Int32 rowsAffected = (int)command.ExecuteNonQuery();                    
+                    Debug.WriteLine($"########## Created User : <{rowsAffected}> ##########");
+                }
+                catch (Exception)
+                {
+                    throw new Exception($"Error creating new user.");
+                }
+            }
         }
 
         public void Delete(User delete)

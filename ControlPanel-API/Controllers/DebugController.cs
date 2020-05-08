@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ControlPanel_API.Data.Database;
+using ControlPanel_API.Entities;
 using ControlPanel_API.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +35,19 @@ namespace ControlPanel_API.Controllers
             {
                 db.CloseConnection();
             }
+        }
+
+        [HttpPost("create")]
+        public IEnumerable<string> CreateNewDebugUser([FromBody] User user)
+        {
+            Trace.Listeners.Add(new TextWriterTraceListener($"log/db.log"));
+            Trace.AutoFlush = true;
+            Trace.Write($"{DateTime.Now, 10}\t");
+            Trace.WriteLine($"Created new User: {user.EmailAddress}.");
+            Trace.Unindent();
+            Trace.Flush();
+
+            return new string[] { "Created User." };
         }
     }
 }
