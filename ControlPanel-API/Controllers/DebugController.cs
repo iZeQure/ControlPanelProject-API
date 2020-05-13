@@ -42,8 +42,7 @@ namespace ControlPanel_API.Controllers
         {
             Trace.Listeners.Add(new TextWriterTraceListener($"log/db.log"));
             Trace.AutoFlush = true;
-            Trace.Write($"{DateTime.Now, 10}\t");
-            Trace.WriteLine($"Created new User: {user.EmailAddress}.");
+            Trace.WriteLine($"{DateTime.Now, -20} Created new User: {user.EmailAddress, 5:N1}");
             Trace.Unindent();
             Trace.Flush();
 
